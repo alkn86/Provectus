@@ -11,7 +11,7 @@ sub openWrite {
 	my $co       = new CGI;	
 	my $time     = localtime;
 	if ( $name && $comment ) {
-		open( FH, ">>", $filename ) or die "OpenErite Error";
+		open( FH, ">>", $filename ) or die "OpenWrite Error";
 		print FH $co->hr, $co->p, "$name wrote at $time:", $co->p,$co->em("$comment"),
 		  $co->p;
 		close(FH);
