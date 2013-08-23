@@ -75,7 +75,7 @@ else {
 	{
 		$error .= "It seems like you are a spam bot;)" . "\n";
 	}
-	unless ( $mail_from =~ m/^(\w+?)@(\w+?)\.(\w+?)\s*$/ ) {
+	unless ( $mail_from =~ m/^(\w+[\.\-]?)+@(\w+)(\.\w+)+/ ) {
 		$error .=
 		  "Incorrect e-mail, or your e-mail domain is not supported. " . "\n";
 	}
