@@ -84,7 +84,7 @@ $co->start_html(
 	-LINK    => 'blue'
 	  ),
 qq|<h2>Login please</h2><hr /><p>$msg</p>|,
-qq|<form method="POST" action="login.cgi" enctype="application/x-www-form-urlencoded" name="next">|,
+qq|<form method="POST" action="login.cgi" enctype="application/x-www-form-urlencoded" name="login">|,
 qq|<input type="text" name="login"  placeholder="Your login" /><p />|,
 qq|<input type="password" name="password"  size="50" maxlength="80" placeholder="Type your password" /><p /><hr />|,
 qq|<p /><input type="submit" name=".submit" value="Log in" />|,
