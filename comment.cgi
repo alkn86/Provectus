@@ -1,51 +1,20 @@
 #!/usr/bin/perl -w 
 use strict;
-use warnings;
-
 use CGI;
+my $co = new CGI;
+use DBI;
 
-sub openWrite {
-	my $filename = shift;
-	my $name     = shift;
-	my $comment  = shift;
-	my $co       = new CGI;	
-	my $time     = localtime;
-	if ( $name && $comment ) {
-		open( FH, ">>", $filename ) or die "OpenWrite Error";
-		print FH $co->hr, $co->p, "$name wrote at $time:", $co->p,$co->em("$comment"),
-		  $co->p;
-		close(FH);
-	}
-}
+my $dbh = DBI->connect( "DBI:mysql:database=customers", 'root', 'PerlStudent' ) or die "Unable to connect to DB";
 
-sub readComment {
-	my $filename = shift;
-	if ( -e $filename ) {
-		open( FH, "<", $filename ) or die "Can't open file";
-		my $result = <FH>;
-		close(FH);
-		return $result;
-	}
-	return;
-
-}
-if ( $ENV{REQUEST_METHOD} eq 'POST' ) {
-	my $co      = new CGI;
+if ( $ENV{'REQUEST_METHOD'} eq 'POST' ) {	
 	my $name    = $co->param('visitor_name');
 	my $comment = $co->param('comment');
+	my $time = localtime;	
+	my $comment_html = qq|<hr /><p><font color="#008B8B">$name</font> wrote at $time :</p><p><em>$comment</em></p>|;	
 	if ( $name && $comment ) {
-		&openWrite( "comments.htm", $name, $comment );
-		$name = undef;
-		$comment = undef;
+			$dbh->do('Insert into `comments` (`name`,`comment`) values (?,?)',{},$name,$comment_html) or warn 'BAD COMMAND';
 	}
-	print $co->redirect('comment.cgi');
-	
-
 }
-
-if ( $ENV{REQUEST_METHOD} eq 'GET' ) {
-
-	my $co = new CGI;
 	print $co->header(),
 	  $co->start_html(
 		-title   => 'Comments',
@@ -53,27 +22,17 @@ if ( $ENV{REQUEST_METHOD} eq 'GET' ) {
 		-BGCOLOR => 'white',
 		-LINK    => 'blue'
 	  ),
-	  $co->h1("Leave your comment please!"),
-	  $co->startform(
-		-method => 'POST',
-		-action => 'comment.cgi'
-	  ),
-
-	  $co->textfield(
-		-name        => 'visitor_name',
-		-placeholder => "Write your name here",
-		-value       => ""
-	  ),
-	  $co->p,
-
-	  $co->textarea(
-		-name        => 'comment',
-		-placeholder => 'Write your opinion here',
-		-rows        => 10,
-		-columns     => 60,
-		-value       => ""
-	  ),
-	  $co->p, $co->submit, $co->reset(), &readComment("comments.htm"),
-	  $co->endform(), $co->end_html();
-
-}
+	  qq|<h1>Leave your comment please!</h1>|,
+	  qq|<form method="POST" action="comment.cgi" enctype="application/x-www-form-urlencoded" name="comment">|,
+	  qq|<input type="text" name="visitor_name"  placeholder="Write your name here" /><p />|,
+	  qq|<textarea name="comment"  rows="10" cols="60" placeholder="Write your opinion here"></textarea><p />|.
+	  qq|<input type="submit" name=".submit" />|,
+	  qq|</form>|;	  
+	  my $sth= $dbh->prepare('Select `comment` from `comments`');
+	  $sth->execute();
+	  while(my @res =$sth->fetchrow_array()){
+	  	print @res;
+	  }
+	  $sth->finish();
+	  print  $co->endform(), $co->end_html();
+	  $dbh->disconnect();
