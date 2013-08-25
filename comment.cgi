@@ -10,8 +10,8 @@ if ( $ENV{'REQUEST_METHOD'} eq 'POST' ) {
 	my $name    = $co->param('visitor_name');
 	my $comment = $co->param('comment');
 	my $time = localtime;	
-	my $comment_html = qq|<hr /><p><font color="#008B8B">$name</font> wrote at $time :</p><p><em>$comment</em></p>|;	
-	if ( $name && $comment ) {
+	my $comment_html = qq|<hr /><p><font color="#008B8B">$name</font> wrote at $time :</p><p><em>$comment</em></p>|;		
+	if ( $name && $comment && ($comment!~ m/<\/?(\w+)\/?>/i) && ($name!~ m/<\/?(\w+)\/?>/i) ) {
 			$dbh->do('Insert into `comments` (`name`,`comment`) values (?,?)',{},$name,$comment_html) or warn 'BAD COMMAND';
 	}
 }
@@ -31,7 +31,7 @@ if ( $ENV{'REQUEST_METHOD'} eq 'POST' ) {
 	  my $sth= $dbh->prepare('Select `comment` from `comments`');
 	  $sth->execute();
 	  while(my @res =$sth->fetchrow_array()){
-	  	print @res;
+	  	print qq|@res|;
 	  }
 	  $sth->finish();
 	  print  $co->endform(), $co->end_html();
