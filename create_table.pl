@@ -15,5 +15,9 @@ $dbh->do('CREATE  TABLE `customer` (
   PRIMARY KEY (`customer_id`) ,  
   UNIQUE INDEX `login_UNIQUE` (`login` ASC))
 ENGINE = MyISAM');
-
+$dbh->do('drop table if exists `comments`');
+$dbh->do('CREATE  TABLE `comments` (
+  `name` VARCHAR(50) NOT NULL ,
+  `comment` TEXT NOT NULL )
+ENGINE = MyISAM');
 $dbh->disconnect();
