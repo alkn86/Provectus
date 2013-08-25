@@ -75,7 +75,7 @@ my $limit_quote = $session->param("limit_quote") || undef;
 	  qq|$res|,
 	  qq|<hr /><p>Quote limit is: $limit_quote</p>|,
 	  #form for next button
-	  qq|<form method="POST" action="viewer.cgi" enctype="application/x-www-form-urlencoded" name="next">|,
+	  qq|<form method="POST" action=$ENV{"SCRIPT_NAME"} enctype="application/x-www-form-urlencoded" name="next">|,
 	  qq|<input type="hidden" name="next" value="1" override="1"  />|,
 	  qq|<input type="hidden" name="current_quote" value="$current_quote" override="1"  />|,	  	  
 	  qq|<input type="hidden" name="sid" value="$sid" override="1" />|;	  	 
@@ -84,7 +84,7 @@ my $limit_quote = $session->param("limit_quote") || undef;
 	  print qq|</form>|;
 	  print 
 	  #Form for logout
-	  qq|<form method="POST" action="viewer.cgi" enctype="application/x-www-form-urlencoded" name="logout">|,
+	  qq|<form method="POST" action=$ENV{"SCRIPT_NAME"} enctype="application/x-www-form-urlencoded" name="logout">|,
 	  qq|<input type="hidden" name="sid" value="$sid"  />|,	  
 	  $co->submit( -label => 'Log out' ),	  
 	  qq|</form>|,	  

@@ -28,7 +28,7 @@ if ( $ENV{REQUEST_METHOD} eq 'GET' ) {
 	  $co->center( $co->h1('Send us a message') ), $co->hr, $co->p,
 	  $co->startform(
 		-method => 'POST',
-		-action => 'mail.cgi'
+		-action => $ENV{"SCRIPT_NAME"}
 	  ),
 	  $co->p("Your e-mail:"),
 	  $co->textfield(
@@ -100,7 +100,7 @@ else {
 		print MAIL "Subject: $subject\n\n";
 		print MAIL "$message";
 		close(MAIL) or warn "message wasn't sent\n" ;
-		print $co->p("Thank you for message! You always can ".$co->a( { href => 'mail.cgi' }, 'write another one;)' )),		  
+		print $co->p("Thank you for message! You always can ".$co->a( { href => $ENV{"SCRIPT_NAME"} }, 'write another one;)' )),		  
 		  $co->end_html;
 	}
 	else {
@@ -111,7 +111,7 @@ else {
 			-BGCOLOR => 'white',
 			-LINK    => 'blue'
 		  ),
-		  $co->p("$error"), $co->p, $co->a( { href => 'mail.cgi' }, 'Go back' ),
+		  $co->p("$error"), $co->p, $co->a( { href => $ENV{"SCRIPT_NAME"} }, 'Go back' ),
 		  $co->end_html;
 	}
 

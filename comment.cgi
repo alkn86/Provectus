@@ -23,7 +23,7 @@ if ( $ENV{'REQUEST_METHOD'} eq 'POST' ) {
 		-LINK    => 'blue'
 	  ),
 	  qq|<h1>Leave your comment please!</h1>|,
-	  qq|<form method="POST" action="comment.cgi" enctype="application/x-www-form-urlencoded" name="comment">|,
+	  qq|<form method="POST" action=$ENV{"SCRIPT_NAME"} enctype="application/x-www-form-urlencoded" name="comment">|,
 	  qq|<input type="text" name="visitor_name"  placeholder="Write your name here" /><p />|,
 	  qq|<textarea name="comment"  rows="10" cols="60" placeholder="Write your opinion here"></textarea><p />|.
 	  qq|<input type="submit" name=".submit" />|,
