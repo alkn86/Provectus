@@ -10,8 +10,8 @@ Database name : customers
 Login: root
 Password: PerlStudent
 
-Then, before using CGI scripts, execute 'create_table.pl' at first. It will create new `customer` table in customers DB. After that 
-you can use a scripts.
+Then, before using CGI scripts, execute 'create_table.pl' at first. It will create new `customer` and `comments` 
+tables in customers DB. After thatyou can use a scripts.
 
 Thank you!
 A.K.
